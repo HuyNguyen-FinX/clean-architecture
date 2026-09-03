@@ -25,13 +25,14 @@ Repository này không dạy lại Go từ đầu. Các ví dụ tập trung và
 ## Learning Path
 
 1. Đọc [00 Software Architecture Foundations](./00-software-architecture-foundations/README.md) để thống nhất mental model về policy, detail, coupling và boundary.
-2. Đọc [ROADMAP.md](./ROADMAP.md) để đi theo từng phase.
-3. Chạy ví dụ trong [examples/mini-banking](./examples/mini-banking) để thấy domain, use case, repository port, adapter và delivery layer làm việc cùng nhau.
-4. Làm lab theo thứ tự trong [labs](./labs).
-5. Làm [architecture exercises](./exercises) và [code review exercises](./code-review-exercises) để luyện phân tích trade-off.
-6. Đọc [case studies](./case-studies) để nối nguyên tắc với hệ thống production.
-7. Dùng [CHEATSHEET.md](./CHEATSHEET.md) và [GLOSSARY.md](./GLOSSARY.md) khi review code hoặc thiết kế module mới.
-8. Theo dõi [PROGRESS.md](./PROGRESS.md) để biết phần nào đã hoàn thiện sâu, phần nào mới là khung học tập đang được mở rộng.
+2. Đọc [CONTENT_AUDIT.md](./CONTENT_AUDIT.md) để biết material nào đã đạt depth và khoảng trống production nào còn mở.
+3. Đọc [ROADMAP.md](./ROADMAP.md) để đi theo từng phase.
+4. Chạy ví dụ trong [examples/mini-banking](./examples/mini-banking) để thấy domain, use case, repository port, adapter và delivery layer làm việc cùng nhau.
+5. Làm lab theo thứ tự trong [labs](./labs).
+6. Làm [architecture exercises](./exercises) và [code review exercises](./code-review-exercises) để luyện phân tích trade-off.
+7. Đọc [case studies](./case-studies) để nối nguyên tắc với hệ thống production.
+8. Dùng [CHEATSHEET.md](./CHEATSHEET.md) và [GLOSSARY.md](./GLOSSARY.md) khi review code hoặc thiết kế module mới.
+9. Theo dõi [PROGRESS.md](./PROGRESS.md) để biết phần nào đã hoàn thiện sâu, phần nào mới là khung học tập đang được mở rộng.
 
 ## Repository Map
 
@@ -40,6 +41,7 @@ clean-architecture-golang/
 ├── README.md
 ├── ROADMAP.md
 ├── PROGRESS.md
+├── CONTENT_AUDIT.md
 ├── GLOSSARY.md
 ├── CHEATSHEET.md
 ├── 00-software-architecture-foundations/

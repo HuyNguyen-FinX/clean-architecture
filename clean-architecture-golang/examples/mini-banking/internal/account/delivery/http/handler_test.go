@@ -53,6 +53,25 @@ func TestTransferEndpointMapsDomainError(t *testing.T) {
 	}
 }
 
+func TestTransferEndpointMapsFrozenAccountToConflict(t *testing.T) {
+	useCase := &recordingTransferUseCase{err: domain.ErrAccountFrozen}
+	handler := NewHandler(useCase)
+
+	req := httptest.NewRequest(http.MethodPost, "/transfers", bytes.NewBufferString(`{
+		"from_account_id": "A-100",
+		"to_account_id": "B-200",
+		"amount": 500000,
+		"currency": "VND"
+	}`))
+	rec := httptest.NewRecorder()
+
+	handler.Routes().ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusConflict {
+		t.Fatalf("expected 409, got %d", rec.Code)
+	}
+}
+
 func TestTransferEndpointRejectsInvalidJSON(t *testing.T) {
 	handler := NewHandler(&recordingTransferUseCase{})
 

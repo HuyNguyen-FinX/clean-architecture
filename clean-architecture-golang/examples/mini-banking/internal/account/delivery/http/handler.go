@@ -87,7 +87,8 @@ func statusFromError(err error) int {
 	switch {
 	case errors.Is(err, domain.ErrAccountNotFound):
 		return http.StatusNotFound
-	case errors.Is(err, domain.ErrInsufficientBalance):
+	case errors.Is(err, domain.ErrInsufficientBalance),
+		errors.Is(err, domain.ErrAccountFrozen):
 		return http.StatusConflict
 	case errors.Is(err, domain.ErrInvalidAccountID),
 		errors.Is(err, domain.ErrInvalidAmount),

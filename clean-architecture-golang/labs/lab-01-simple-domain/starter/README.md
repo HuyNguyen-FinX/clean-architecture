@@ -1,11 +1,19 @@
 # Starter
 
-Điểm xuất phát của lab này là một domain account còn anemic. Code compile được, nhưng business rule chưa được bảo vệ tốt. Nhiệm vụ của bạn là refactor để invariant nằm trong method của domain.
+Starter là baseline **compile và test được nhưng chưa bảo vệ domain**. Test `TestPublicBalanceCanBreakInvariant` cố ý chứng minh caller có thể tạo invalid state.
 
 Chạy:
 
 ```bash
-go test ./...
+go test ./... -v
 ```
 
-Sau đó sửa code cho đến khi test mô tả đúng rule nghiệp vụ.
+Sau đó:
+
+1. Viết thêm behavior tests từ README của lab.
+2. Refactor public primitives thành `Money` và private Account fields.
+3. Thay free function `Withdraw` bằng Account behavior.
+4. Xóa/thay test public mutation khi compiler không còn cho truy cập field.
+5. Giữ mọi test hợp lệ pass.
+
+Không import code từ `solution`. Hãy thiết kế public API trước, rồi dùng test/compiler dẫn đường.

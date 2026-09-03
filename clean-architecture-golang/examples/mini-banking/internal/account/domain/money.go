@@ -2,21 +2,47 @@ package domain
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
+type Currency string
+
+func NewCurrency(raw string) (Currency, error) {
+	normalized := strings.TrimSpace(strings.ToUpper(raw))
+	if len(normalized) != 3 {
+		return "", ErrInvalidCurrency
+	}
+	for _, char := range normalized {
+		if char < 'A' || char > 'Z' {
+			return "", ErrInvalidCurrency
+		}
+	}
+
+	return Currency(normalized), nil
+}
+
+func (c Currency) String() string {
+	return string(c)
+}
+
+func (c Currency) valid() bool {
+	normalized, err := NewCurrency(string(c))
+	return err == nil && normalized == c
+}
+
 type Money struct {
 	amount   int64
-	currency string
+	currency Currency
 }
 
 func NewMoney(amount int64, currency string) (Money, error) {
-	currency = strings.TrimSpace(strings.ToUpper(currency))
-	if currency == "" {
-		return Money{}, ErrInvalidCurrency
+	parsedCurrency, err := NewCurrency(currency)
+	if err != nil {
+		return Money{}, err
 	}
 
-	return Money{amount: amount, currency: currency}, nil
+	return Money{amount: amount, currency: parsedCurrency}, nil
 }
 
 func NewPositiveMoney(amount int64, currency string) (Money, error) {
@@ -40,8 +66,12 @@ func (m Money) Amount() int64 {
 	return m.amount
 }
 
-func (m Money) Currency() string {
+func (m Money) Currency() Currency {
 	return m.currency
+}
+
+func (m Money) Equal(other Money) bool {
+	return m.amount == other.amount && m.currency == other.currency
 }
 
 func (m Money) IsPositive() bool {
@@ -57,7 +87,12 @@ func (m Money) Add(other Money) (Money, error) {
 		return Money{}, err
 	}
 
-	return Money{amount: m.amount + other.amount, currency: m.currency}, nil
+	amount, err := checkedAdd(m.amount, other.amount)
+	if err != nil {
+		return Money{}, err
+	}
+
+	return Money{amount: amount, currency: m.currency}, nil
 }
 
 func (m Money) Sub(other Money) (Money, error) {
@@ -65,11 +100,23 @@ func (m Money) Sub(other Money) (Money, error) {
 		return Money{}, err
 	}
 
-	return Money{amount: m.amount - other.amount, currency: m.currency}, nil
+	amount, err := checkedSub(m.amount, other.amount)
+	if err != nil {
+		return Money{}, err
+	}
+
+	return Money{amount: amount, currency: m.currency}, nil
 }
 
-func (m Money) Negate() Money {
-	return Money{amount: -m.amount, currency: m.currency}
+func (m Money) Negate() (Money, error) {
+	if err := m.validate(); err != nil {
+		return Money{}, err
+	}
+	if m.amount == math.MinInt64 {
+		return Money{}, ErrMoneyOverflow
+	}
+
+	return Money{amount: -m.amount, currency: m.currency}, nil
 }
 
 func (m Money) LessThan(other Money) (bool, error) {
@@ -85,9 +132,44 @@ func (m Money) Format() string {
 }
 
 func (m Money) ensureSameCurrency(other Money) error {
+	if err := m.validate(); err != nil {
+		return err
+	}
+	if err := other.validate(); err != nil {
+		return err
+	}
 	if m.currency != other.currency {
 		return ErrCurrencyMismatch
 	}
 
 	return nil
+}
+
+func (m Money) validate() error {
+	if !m.currency.valid() {
+		return ErrInvalidCurrency
+	}
+	return nil
+}
+
+func checkedAdd(left, right int64) (int64, error) {
+	if right > 0 && left > math.MaxInt64-right {
+		return 0, ErrMoneyOverflow
+	}
+	if right < 0 && left < math.MinInt64-right {
+		return 0, ErrMoneyOverflow
+	}
+
+	return left + right, nil
+}
+
+func checkedSub(left, right int64) (int64, error) {
+	if right > 0 && left < math.MinInt64+right {
+		return 0, ErrMoneyOverflow
+	}
+	if right < 0 && left > math.MaxInt64+right {
+		return 0, ErrMoneyOverflow
+	}
+
+	return left - right, nil
 }
