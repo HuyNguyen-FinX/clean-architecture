@@ -1,9 +1,14 @@
 # Solution
 
-Solution tốt có:
+~~~text
+consumer/  strict envelope mapper, inbox/use-case ports, error classification
+memory/    ProcessOnce teaching adapter
+outbox/    repository + publisher worker
+~~~
 
-```text
-kafka message -> adapter DTO -> use case command -> application/domain
-```
+~~~bash
+go test -race ./...
+go vet ./...
+~~~
 
-Producer nên implement port như `TransferEventPublisher`, không để use case import Kafka client.
+Không có Kafka client trong core exercise: client callback chỉ cần gọi Consumer.Handle rồi map Permanent/Retryable sang DLQ/retry/offset policy.

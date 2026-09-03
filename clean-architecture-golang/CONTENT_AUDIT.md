@@ -193,3 +193,117 @@ Finding còn mở không bị che giấu:
 - HTTP unknown error vẫn cần stable public response/error taxonomy ở increment HTTP/Error Handling.
 
 Priority sau increment là `04-usecase-application-layer`, `05-repository-pattern`, sau đó `08`, `09`, `10` và `11` như bảng audit.
+
+## Re-evaluation Sau Increment 02
+
+Ngày đánh giá lại: 2026-09-03
+
+| Material | Baseline | Hiện tại | Bằng chứng nâng chất lượng |
+|---|---:|---:|---|
+| 04 Use Case / Application | 2 | 5 | 566 dòng; orchestration, command/result, ports, context/transaction/idempotency, error/test doubles, production failure và debugging |
+| 05 Repository | 2 | 5 | 695 dòng; DAO comparison, consumer ownership, mapping, error semantics, transaction/locking/cache, contract/integration tests |
+| 08 Dependency Injection | 1 | 5 | Manual object graph, DI vs DIP, config/lifecycle/resource ownership, Wire/Fx trade-off, startup failure và smoke tests |
+| 09 Project Structure | 2 | 5 | Layer/feature/hybrid comparison theo nhiều quy mô, import ownership, internal/pkg/cmd/shared, migration strategy và fitness tests |
+| 10 Database | 1 | 5 | pgxpool adapter chạy được, schema/constraints/migration/mapping, query/index/pool, integration strategy và production failures |
+| 11 Transaction | 1 | 5 | Closure Transactor chạy được, sáu pattern, isolation/locking/deadlock/optimistic concurrency, retry/idempotency/outbox và investigation |
+| labs 02/03/04/06/08 | 1 | 5 | Mỗi lab có executable bad baseline, solution module, diagrams, steps, expected behavior, challenges và race/vet verification |
+| examples/mini-banking | 3 | 4 | V5a có PostgreSQL + atomic account writes + stable row lock order; còn thiếu Transfer record/history, idempotency, outbox và observability |
+
+Finding đã xử lý:
+
+- Application constructor không còn fallback Noop âm thầm.
+- Memory Repository clone tại ownership boundary; contract test kiểm detached read/save và cancellation.
+- PostgreSQL adapter map row qua `RehydrateAccount`, map no-row có chủ đích và giữ domain/application độc lập pgx.
+- Transaction bao trọn hai Account save; integration test kiểm commit, rollback và opposite-transfer lock order.
+- pgx được pin v5.7.2 để giữ module Go 1.22.
+
+Finding còn mở:
+
+- Durable Transfer record/history chưa nằm cùng transaction.
+- HTTP contract/error response còn cần hardening.
+- Idempotency, Kafka/outbox, Redis và observability chưa được implement.
+
+## Re-evaluation Sau Increment 03
+
+Ngày đánh giá lại: 2026-09-03
+
+| Material | Baseline | Hiện tại | Bằng chứng |
+|---|---:|---:|---|
+| 06 Delivery Layer | 2 | 5 | DTO/command/entity, auth/validation/context/errors, HTTP/gRPC/Kafka/CLI adapters, ack, testing, production/debug |
+| 07 Infrastructure Layer | 2 | 5 | Adapter semantics, mapping, timeout/retry/lifecycle, Postgres/Redis/Kafka/external cases, contract/integration tests |
+| 12 HTTP REST API | 2 | 5 | Strict executable handler, status/error contract, timeout/auth/idempotency/pagination/lifecycle, httptest matrix |
+| 13 gRPC | 1 | 5 | Protobuf mapping, errors/deadlines/metadata/interceptors, streaming, compatibility, retry/test strategy |
+| 14 Kafka Event Driven | 2 | 5 | Producer/consumer directions, duplicate/inbox/offset/order/retry/DLQ, transactional outbox SQL/failure matrix |
+| 15 Redis Cache | 1 | 5 | Placement, cache-aside, keys/TTL/invalidation/stampede, failure policy, lock/rate-limit và deterministic tests |
+| 16 External Services | 2 | 5 | Intent gateway, anti-corruption mapping, timeout/retry/idempotency, ambiguous outcome, breaker/bulkhead/reconciliation |
+| 17 Error Handling | 2 | 5 | Domain/application/infrastructure/transport taxonomy, Is/As/wrap/join, safe mapping, retry/unknown/logging |
+| 18 Validation | 1 | 5 | Transport/application/domain/DB ownership, Value Object, cross-field/external/normalization, race/testing |
+| labs 05/09/10 | 1 | 5 | Runnable HTTP, Kafka semantics và cache labs với starter/solution/race/vet |
+
+Finding đã xử lý:
+
+- HTTP adapter không còn nhận trailing JSON hoặc trả raw unknown error.
+- Kafka lab chứng minh duplicate normal path và marker chỉ complete sau successful effect.
+- Outbox worker chỉ mark sau publish; tài liệu công bố crash window vẫn sinh duplicate.
+- Cache lab phân biệt miss/error, TTL bằng fake clock và fail-open chỉ cho performance cache.
+
+Finding còn mở:
+
+- Mini-banking chưa tích hợp durable idempotency/Transfer/outbox.
+- gRPC/Kafka/Redis production clients chỉ được dạy bằng contract/lab, chưa nằm trong mini-banking object graph.
+- Graceful shutdown và telemetry triển khai ở increment production.
+
+## Re-evaluation Sau Increment 04
+
+Ngày đánh giá lại: 2026-09-03
+
+| Material | Baseline | Hiện tại | Bằng chứng |
+|---|---:|---:|---|
+| 19 Logging/Observability | 1 | 5 | slog, metrics/cardinality, tracing/propagation/sampling, SLI/SLO, PII, health và incident workflow |
+| 20 Testing | 1 | 5 | Domain/use case/repo/HTTP/async tests, fake/stub/spy/mock code, contract/integration/E2E/race/fuzz/CI/flakiness |
+| 21 Concurrency Go | 1 | 5 | goroutine/channel ownership, errgroup/workers/backpressure, races, shutdown, profiling và DB distinction |
+| 22 DDD | 1 | 5 | strategic/tactical DDD, language/context maps, Aggregates/events/services, transfer lifecycle và non-dogmatic scope |
+| 23 CQRS/Event Driven | 1 | 5 | CQRS levels, projection/rebuild, Event Sourcing/version/snapshot, Saga/compensation và failure testing |
+| 24 Production Architecture | 2 | 5 | lifecycle/probes/config, budgets/retries, idempotency/outbox, migrations/deployment/security/SLO/reconcile |
+| labs 07/12 | 1 | 5 | Runnable multi-boundary testing lab và capstone with UoW/history/idempotency/outbox/HTTP |
+
+Mini-banking đã xử lý lifecycle finding: no log.Fatal cleanup loss, có request correlation, structured outer-boundary log và graceful HTTP shutdown. Full metrics/tracing vẫn được công bố là V11b thay vì đánh dấu hoàn tất giả.
+
+## Re-evaluation Sau Increment 05
+
+Ngày đánh giá lại: 2026-09-03
+
+| Material | Baseline | Hiện tại | Bằng chứng |
+|---|---:|---:|---|
+| 00 Software Architecture | 4 | 5 | Investigation walkthrough, executable import fitness test, crash-boundary exercise và annotated references |
+| 25 Refactoring | 1 | 5 | God Handler Step 0, characterization, eight safe extraction steps, transaction/outbox migration, canary/debug/rollback |
+| 26 Anti-patterns | 1 | 5 | 20+ subtle smells, Go examples, justified exceptions, diagnosis/refactor flow và proportional Todo comparison |
+| 27 Case Studies | 1 | 5 | Comparative matrix, eight linked deep dossiers, cross-case decision framework và production synthesis |
+| 28 System Design | 1 | 5 | 5.000 TPS estimate, ledger/idempotency/partition/hot-key/multi-region/failure/evolution design |
+| 29 Interview Review | 1 | 5 | 30 model answers, follow-ups, traps, code review/system design drills và scoring rubric |
+| Lab 11 | 1 | 5 | Compileable subtle bad baseline và runnable Domain/Application/Memory/HTTP refactor with tests |
+| Architecture exercises 01-07 | 1-2 | 5 | Problems tách solutions; assumptions, failure injection, deliverables, self-review và context-specific model answers |
+| Code Review 01 | 1 | 5 | Realistic source compile được; P0/P1 findings, minimal fixes, test evidence và incremental sequence |
+| Case studies 01-08 | 1 | 5 | Mỗi case 150-170 dòng về model, ports, data, consistency, failures, tests, observability và simpler alternative |
+| `examples/mini-banking` | 3 | 5 | V1-V11 runnable vertical slice: atomic artifacts, history, concurrent idempotency, Kafka/outbox, HTTP, metrics/correlation/lifecycle |
+| Core docs | 2-3 | 5 | README/roadmap đồng bộ; Glossary thêm semantic/counter-example links; Cheatsheet thêm failure/decision/review flow |
+
+### Findings Đã Khép
+
+- Transfer không còn chỉ mutate hai balance: immutable history, idempotency record và `MoneyTransferred.v1` outbox cùng transaction.
+- Memory adapter có staged snapshot/rollback; PostgreSQL adapter claim idempotency row trước effect và serialize concurrent duplicate key.
+- HTTP trả stable `transfer_id`, phân biệt first/replay, hỗ trợ account history và không lộ internal errors.
+- Kafka producer dùng synchronous required acknowledgements; consumer lấy stable event ID, chỉ commit sau durable outcome hoặc DLQ publish.
+- Metrics dùng bounded route labels; request/trace IDs được propagate ở outer boundary; domain/application không import telemetry SDK.
+- Tất cả lab `starter/` và `solution/` đều có `go.mod`, Go source và test/build path thật.
+
+### Verification Cuối
+
+- `go test -race ./...` và `go vet ./...` pass cho mini-banking, code-review starter và 24 module của 12 labs.
+- PostgreSQL integration suites compile; khi không có `TEST_DATABASE_URL` chúng skip có thông báo thay vì giả lập SQL bằng mock.
+- Relative Markdown links đã được kiểm tra trên toàn repository, không có target bị thiếu.
+- `gofmt` đã chạy trên toàn bộ executable modules; architecture fitness test của mini-banking pass.
+
+### Giới Hạn Được Công Bố
+
+Điểm 5 ở đây đánh giá **learning material**, không tuyên bố sample là core banking có thể deploy nguyên trạng. Mini-banking cố ý chưa có auth/fraud/regulatory controls, multi-region double-entry ledger, Kafka broker test trong local gate hoặc OpenTelemetry exporter chuẩn. Chapter/case study giải thích các yêu cầu đó và README nêu rõ cách production cần nâng cấp; không che chúng sau nhãn Clean Architecture.

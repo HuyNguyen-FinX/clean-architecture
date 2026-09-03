@@ -12,73 +12,70 @@ Trạng thái trong file này dùng quality gate tại [CONTENT_AUDIT.md](./CONT
 
 ## Core Docs
 
-- [FOUNDATIONAL COMPLETE] `README.md`
-- [FOUNDATIONAL COMPLETE] `ROADMAP.md`
-- [IN PROGRESS] `GLOSSARY.md`
-- [FOUNDATIONAL COMPLETE] `CHEATSHEET.md`
+- [DEEP COMPLETE] `README.md`
+- [DEEP COMPLETE] `ROADMAP.md`
+- [DEEP COMPLETE] `GLOSSARY.md`
+- [DEEP COMPLETE] `CHEATSHEET.md`
 - [DEEP COMPLETE] `CONTENT_AUDIT.md` cho baseline 2026-09-03
-- [IN PROGRESS] Runnable example `examples/mini-banking`: V1-V3 chạy được; chưa có transaction production, persistence và reliability evolution.
+- [DEEP COMPLETE] Runnable example `examples/mini-banking`: V1-V11 có Domain, PostgreSQL transaction/locking, Transfer history, concurrent idempotency claim, Kafka adapters, outbox relay, strict HTTP, metrics/trace correlation và graceful lifecycle.
 
 ## Chapters
 
-- [FOUNDATIONAL COMPLETE] 00 Software Architecture Foundations
+- [DEEP COMPLETE] 00 Software Architecture Foundations
 - [DEEP COMPLETE] 01 Clean Architecture Foundations
 - [DEEP COMPLETE] 02 Dependency Rule
 - [DEEP COMPLETE] 03 Domain Layer
-- [OUTLINE ONLY] 04 Use Case / Application Layer
-- [OUTLINE ONLY] 05 Repository Pattern
-- [OUTLINE ONLY] 06 Delivery Layer
-- [OUTLINE ONLY] 07 Infrastructure Layer
-- [OUTLINE ONLY] 08 Dependency Injection
-- [OUTLINE ONLY] 09 Project Structure
-- [OUTLINE ONLY] 10 Database
-- [OUTLINE ONLY] 11 Transaction Management
-- [OUTLINE ONLY] 12 HTTP REST API
-- [OUTLINE ONLY] 13 gRPC
-- [OUTLINE ONLY] 14 Kafka Event Driven
-- [OUTLINE ONLY] 15 Redis Cache
-- [OUTLINE ONLY] 16 External Services
-- [OUTLINE ONLY] 17 Error Handling
-- [OUTLINE ONLY] 18 Validation
-- [OUTLINE ONLY] 19 Logging / Observability
-- [OUTLINE ONLY] 20 Testing
-- [OUTLINE ONLY] 21 Concurrency Golang
-- [OUTLINE ONLY] 22 Domain Driven Design
-- [OUTLINE ONLY] 23 CQRS / Event Driven
-- [OUTLINE ONLY] 24 Production Architecture
-- [OUTLINE ONLY] 25 Refactoring
-- [OUTLINE ONLY] 26 Anti-patterns
-- [OUTLINE ONLY] 27 Case Studies
-- [OUTLINE ONLY] 28 System Design
-- [OUTLINE ONLY] 29 Interview Review
+- [DEEP COMPLETE] 04 Use Case / Application Layer
+- [DEEP COMPLETE] 05 Repository Pattern
+- [DEEP COMPLETE] 06 Delivery Layer
+- [DEEP COMPLETE] 07 Infrastructure Layer
+- [DEEP COMPLETE] 08 Dependency Injection
+- [DEEP COMPLETE] 09 Project Structure
+- [DEEP COMPLETE] 10 Database
+- [DEEP COMPLETE] 11 Transaction Management
+- [DEEP COMPLETE] 12 HTTP REST API
+- [DEEP COMPLETE] 13 gRPC
+- [DEEP COMPLETE] 14 Kafka Event Driven
+- [DEEP COMPLETE] 15 Redis Cache
+- [DEEP COMPLETE] 16 External Services
+- [DEEP COMPLETE] 17 Error Handling
+- [DEEP COMPLETE] 18 Validation
+- [DEEP COMPLETE] 19 Logging / Observability
+- [DEEP COMPLETE] 20 Testing
+- [DEEP COMPLETE] 21 Concurrency Golang
+- [DEEP COMPLETE] 22 Domain Driven Design
+- [DEEP COMPLETE] 23 CQRS / Event Driven
+- [DEEP COMPLETE] 24 Production Architecture
+- [DEEP COMPLETE] 25 Refactoring
+- [DEEP COMPLETE] 26 Anti-patterns
+- [DEEP COMPLETE] 27 Case Studies
+- [DEEP COMPLETE] 28 System Design
+- [DEEP COMPLETE] 29 Interview Review
 
 ## Labs
 
 - [DEEP COMPLETE] `lab-01-simple-domain`
-- [OUTLINE ONLY] `lab-02-usecase`
-- [OUTLINE ONLY] `lab-03-repository`
-- [OUTLINE ONLY] `lab-04-postgresql`
-- [OUTLINE ONLY] `lab-05-http`
-- [OUTLINE ONLY] `lab-06-dependency-injection`
-- [OUTLINE ONLY] `lab-07-testing`
-- [OUTLINE ONLY] `lab-08-transaction`
-- [OUTLINE ONLY] `lab-09-kafka`
-- [OUTLINE ONLY] `lab-10-redis`
-- [OUTLINE ONLY] `lab-11-refactoring`
-- [OUTLINE ONLY] `lab-12-full-application`
+- [DEEP COMPLETE] `lab-02-usecase`
+- [DEEP COMPLETE] `lab-03-repository`
+- [DEEP COMPLETE] `lab-04-postgresql`
+- [DEEP COMPLETE] `lab-05-http`
+- [DEEP COMPLETE] `lab-06-dependency-injection`
+- [DEEP COMPLETE] `lab-07-testing`
+- [DEEP COMPLETE] `lab-08-transaction`
+- [DEEP COMPLETE] `lab-09-kafka`
+- [DEEP COMPLETE] `lab-10-redis`
+- [DEEP COMPLETE] `lab-11-refactoring`
+- [DEEP COMPLETE] `lab-12-full-application`
 
 ## Exercises Và Case Studies
 
-- [IN PROGRESS] Architecture exercises 01-07: problem/solution đã tách, solution còn nông.
-- [OUTLINE ONLY] Code review exercise 01: chưa có realistic Go source để review.
-- [OUTLINE ONLY] Case study briefs 01-08.
+- [DEEP COMPLETE] Architecture exercises 01-07: problem/solution tách riêng, đề có assumptions/failure injection/deliverables/self-review và đáp án có reasoning/trade-off.
+- [DEEP COMPLETE] Code review exercise 01: realistic Go source compile được, subtle findings, safe sequence và verification matrix.
+- [DEEP COMPLETE] Case studies 01-08: 1.200+ dòng phân tích context-specific về model, boundaries, transaction, failure, test, operations và alternative.
 
-## Increment Tiếp Theo
+## Trạng Thái Curriculum
 
-1. Rewrite sâu `04-usecase-application-layer` và biến `lab-02-usecase` thành lab chạy được.
-2. Rewrite sâu `05-repository-pattern` và hoàn thiện contract tests cho memory adapter.
-3. Nâng `08-dependency-injection` và `09-project-structure` dựa trên object/import graph hiện có.
-4. Thêm PostgreSQL ở `10-database`, rồi transaction thật ở `11-transaction-management`.
+Curriculum rewrite theo quality gate hiện đã khép đủ 30 chapter, 12 labs, mini-banking V1-V11, 7 architecture exercises, code review exercise và 8 case studies. Các giới hạn của learning implementation như broker integration, OpenTelemetry exporter chuẩn và double-entry ledger được công bố rõ, không bị trình bày như guarantee đã có.
 
 ## Quy Tắc Cập Nhật
 
@@ -102,3 +99,36 @@ Không nâng trạng thái hàng loạt chỉ vì đã thêm cùng một templat
 - Mini-banking domain: constructor invariant, Currency/Money equality, overflow guard, frozen state và test matrix.
 - `lab-01`: starter/solution có code thật và hướng dẫn 60-90 phút.
 - Verification: mini-banking, lab starter và lab solution đều pass `go test -race ./...`; relative links của material mới tồn tại; `git diff --check` sạch.
+
+### 2026-09-03 - Application, Repository, PostgreSQL Và Transaction
+
+- Chapter 04-05: use-case orchestration, consumer-owned ports, Repository semantics, ownership, mapping, transaction/concurrency và testing strategy.
+- Chapter 08-11: manual DI/lifecycle, feature-oriented package ownership, pgx database adapter, sáu transaction patterns, isolation/locking/deadlock/retry/idempotency/outbox reasoning.
+- Mini-banking V5a: pgx v5.7.2 trên Go 1.22, migration, strict row rehydration, context-bound transaction, `SELECT FOR UPDATE`, deterministic Account lock order và optional PostgreSQL integration suite.
+- Labs 02/03/04/06/08: starter và solution đều có Go module/code/test thật; Repository contract test, composition smoke test và rollback/concurrency tests.
+- Verification: mọi module mới pass `go test -race ./...` và `go vet ./...`; PostgreSQL suites compile và skip có thông báo khi thiếu `TEST_DATABASE_URL`.
+
+### 2026-09-03 - Delivery, HTTP, Kafka, Redis Và External Adapters
+
+- Chapter 06-07 và 12-18: driving/driven adapters, strict HTTP, gRPC mapping/evolution, Kafka delivery semantics/outbox, Redis consistency, external ambiguous outcomes, error taxonomy và validation ownership.
+- Mini-banking HTTP: strict single-object JSON, unknown-field/body limit, safe stable error response, nil dependency guard và tests chống internal-error leak.
+- Labs 05/09/10: executable baselines và solutions cho HTTP contract, duplicate-safe consumer/outbox worker, TTL cache decorator/fail-open.
+- Verification: tất cả module mới pass `go test -race ./...` và `go vet ./...`.
+
+### 2026-09-03 - Testing, Observability, DDD/CQRS Và Production
+
+- Chapter 19-24: structured telemetry/cardinality/SLO, full test portfolio, Go concurrency ownership, strategic+tactical DDD, CQRS/Event Sourcing/Saga và lifecycle/reliability.
+- Mini-banking: slog request middleware, bounded request ID, server timeouts, signal-based graceful shutdown và resource cleanup không dùng log.Fatal.
+- Lab 07: domain/use-case/HTTP/memory test portfolio có code và test gaps explicit.
+- Lab 12: capstone chạy được với Account, explicit UnitOfWork, Transfer history, durable-semantics idempotency hash, outbox intent và HTTP replay/history tests.
+- Verification: mini-banking và lab modules pass `go test -race ./...`, `go vet ./...`.
+
+### 2026-09-03 - Refactoring, Case Studies Và Vertical Slice V1-V11
+
+- Chapter 25-29: refactor Step 0-8, 20+ anti-patterns, cross-case synthesis, system design transfer 5.000 TPS và interview model answers/rubric.
+- Lab 11: executable God Handler starter và refactored Domain/Application/Adapters solution; race/vet sạch.
+- Exercises 01-07: đề không lộ đáp án nhưng có constraints, failure injection, deliverables và self-review; solution phân tích context/trade-off.
+- Case studies 01-08: từ brief 12-14 dòng thành 150-170 dòng/case, bao phủ model, dependency, data/transaction, concurrency, failure matrix, tests, observability và alternatives.
+- Mini-banking V1-V11: Transfer Entity/history, atomic memory/PostgreSQL artifacts, concurrency-safe durable idempotency claim, outbox relay, real Kafka producer/consumer adapters, strict history API, metrics, W3C trace correlation và lifecycle.
+- Core docs: foundations có investigation/failure exercise; Glossary có semantic relationships/counter-examples; Cheatsheet có decision/failure/review checklists.
+- Verification: mini-banking, code-review starter và toàn bộ 24 starter/solution lab modules pass `go test -race ./...` và `go vet ./...`. PostgreSQL integration suites compile và skip có chủ đích khi thiếu `TEST_DATABASE_URL`.

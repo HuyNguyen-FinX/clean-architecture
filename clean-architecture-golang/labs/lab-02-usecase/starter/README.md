@@ -1,14 +1,9 @@
 # Starter
 
-Bắt đầu từ domain của lab 01. Thêm một file use case nhận command thuần Go:
+Đây là baseline chạy được nhưng cố ý trộn business rule, storage và orchestration trong TransferService. Hãy chạy test, đọc service.go, rồi refactor theo đề bài ở thư mục cha.
 
-```go
-type TransferMoneyCommand struct {
-	FromAccountID string
-	ToAccountID   string
-	Amount        int64
-	Currency      string
-}
-```
+~~~bash
+go test ./...
+~~~
 
-Starter nên dùng fake repository trong test để bạn tập consumer-defined interface.
+Không mở solution trước khi bạn đã xác định ít nhất năm coupling hoặc failure path khó test trong starter.

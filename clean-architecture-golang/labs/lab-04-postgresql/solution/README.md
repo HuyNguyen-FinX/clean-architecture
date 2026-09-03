@@ -1,10 +1,9 @@
 # Solution
 
-Solution mong muốn:
+Package domain giữ invariant; application sở hữu port/error semantics; postgres giữ row, SQL, migration và driver mapping.
 
-```text
-application -> domain
-postgres adapter -> application/domain
-```
-
-Repository adapter chịu trách nhiệm query, scan row, map sang domain entity và map lỗi not found sang domain/application error phù hợp.
+~~~bash
+go test -race ./...
+TEST_DATABASE_URL=postgres://... go test -race ./...
+go vet ./...
+~~~

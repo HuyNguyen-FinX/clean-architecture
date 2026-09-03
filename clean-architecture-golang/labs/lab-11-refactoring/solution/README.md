@@ -1,14 +1,13 @@
 # Solution
 
-Solution mong muốn đi từng bước:
+~~~text
+domain/       business behavior
+application/  command + UoW contract
+memory/       transactional adapter + outbox
+httpapi/      preserved HTTP contract
+~~~
 
-```text
-extract domain rule
-extract command/use case
-extract repository port
-move SQL to adapter
-move Kafka to publisher adapter
-map HTTP error ở handler
-```
-
-Không rewrite toàn bộ trong một lần.
+~~~bash
+go test -race ./...
+go vet ./...
+~~~

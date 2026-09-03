@@ -1,5 +1,7 @@
 # Starter
 
-Bắt đầu với các package đã có nhưng object còn được tạo rải rác. Gom wiring về `cmd/api/main.go`.
+Package globalStore là hidden mutable dependency. Test baseline pass, nhưng parallel test hoặc nhiều cấu hình graph sẽ khó kiểm soát.
 
-Không đưa config loader vào domain hoặc use case.
+~~~bash
+go test ./...
+~~~

@@ -1,11 +1,13 @@
 # Solution
 
-Solution mong muốn:
+~~~text
+application/  consumer port và GetBalance
+memory/       concrete Store
+httpapi/      delivery adapter
+composition/  config, object graph, cleanup
+~~~
 
-```go
-repo := postgres.NewAccountRepository(pool)
-uc := application.NewTransferMoneyUseCase(repo, tx)
-handler := httpadapter.NewHandler(uc)
-```
-
-`main.go` là nơi lắp ráp. Core package vẫn không import adapter cụ thể.
+~~~bash
+go test -race ./...
+go vet ./...
+~~~

@@ -1,9 +1,17 @@
 # Solution
 
-Solution tốt không chỉ có code chạy được, mà còn giải thích trade-off:
+~~~text
+domain/       Account invariant
+application/  TransferMoney, UnitOfWork, history contracts
+memory/       copy-on-write transaction + read projection
+httpapi/      strict-ish transport mapping
+cmd/api/      composition root
+~~~
 
-- Module nào là domain.
-- Port nào thật sự cần.
-- Adapter nào có thể thay thế.
-- Transaction/idempotency được xử lý ở đâu.
-- Observability đi qua layer nào mà không chạm domain.
+~~~bash
+go test -race ./...
+go vet ./...
+go run ./cmd/api
+~~~
+
+Outbox ở solution là durable intent trong transaction profile, chưa phải delivered event. Publisher worker/inbox xem Lab 09.

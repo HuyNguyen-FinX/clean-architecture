@@ -1,5 +1,7 @@
 # Starter
 
-Bắt đầu với transfer đang save sender rồi save receiver không có transaction thật.
+Transfer lưu nguồn trước, rồi receiver Save có thể fail. Test baseline chứng minh partial write thay vì che lỗi.
 
-Nhiệm vụ: thêm abstraction transaction mà không để application import `*sql.Tx` hoặc `pgx.Tx`.
+~~~bash
+go test ./...
+~~~

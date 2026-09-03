@@ -1,14 +1,10 @@
 # Solution
 
-Solution mong muốn dùng một boundary rõ:
+Memory Store implement cả AccountRepository và Transactor. Transaction giữ working copy trong private context value rồi commit atomically khi callback thành công.
 
-```go
-err := tx.WithinTransaction(ctx, func(txCtx context.Context) error {
-	// load for update
-	// withdraw/deposit
-	// save both
-	return nil
-})
-```
+~~~bash
+go test -race ./...
+go vet ./...
+~~~
 
-PostgreSQL adapter quyết định cách bind `txCtx` với transaction cụ thể.
+Adapter này dành cho học/test, không thay integration test PostgreSQL.

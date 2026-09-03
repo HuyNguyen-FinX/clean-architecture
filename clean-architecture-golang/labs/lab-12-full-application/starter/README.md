@@ -1,9 +1,7 @@
 # Starter
 
-Bắt đầu từ `examples/mini-banking`, sau đó mở rộng từng lát:
+God handler giữ global account/history, validation và JSON trong một function. Test baseline khóa happy behavior; hãy refactor theo từng bước capstone.
 
-```text
-deposit -> withdrawal -> transfer history -> PostgreSQL -> HTTP -> transaction -> Kafka -> Redis
-```
-
-Mỗi lát phải có test phù hợp trước khi thêm lát tiếp theo.
+~~~bash
+go test ./...
+~~~

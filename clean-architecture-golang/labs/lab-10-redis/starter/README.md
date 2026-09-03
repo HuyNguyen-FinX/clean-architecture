@@ -1,3 +1,7 @@
 # Starter
 
-Bắt đầu với endpoint đọc account balance. Thêm cache aside bằng repository decorator hoặc application service tùy cách bạn muốn bảo vệ consistency.
+Cache map không TTL/invalidation nên stale vô hạn. Baseline test ghi lại lỗi này.
+
+~~~bash
+go test ./...
+~~~

@@ -1,12 +1,17 @@
 # Solution
 
-Solution tốt đặt interface gần use case:
+~~~text
+domain/                 Aggregate và invariant
+application/            use case + consumer-owned port
+infrastructure/memory/  adapter
+repositorytest/         reusable contract suite
+~~~
 
-```go
-type AccountRepository interface {
-	FindByID(ctx context.Context, id domain.AccountID) (*domain.Account, error)
-	Save(ctx context.Context, account *domain.Account) error
-}
-```
+Chạy:
 
-In-memory repository là adapter, không phải domain. Nó có thể nằm dưới `infrastructure/memory`.
+~~~bash
+go test -race ./...
+go vet ./...
+~~~
+
+Contract suite không thay thế PostgreSQL integration test. Nó chỉ buộc các adapter chia sẻ những semantics mà application đã công bố.

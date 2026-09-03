@@ -1,8 +1,15 @@
 # Solution
 
-Solution tốt chứng minh boundary bằng test:
+~~~text
+domain/       invariant tests
+application/  fake/spy use-case tests
+memory/       detached ownership adapter
+httpapi/      httptest contract
+~~~
 
-- Domain test chỉ tạo object.
-- Use case test dùng fake repository.
-- HTTP test dùng `httptest`.
-- Repository test dùng database thật hoặc testcontainer.
+~~~bash
+go test -race ./...
+go vet ./...
+~~~
+
+Test gap cố ý: không có PostgreSQL nên suite chưa chứng minh SQL, rollback hoặc row locking.

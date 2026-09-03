@@ -1,5 +1,9 @@
 # Starter
 
-Bắt đầu với use case đang phụ thuộc trực tiếp vào map hoặc slice trong memory. Nhiệm vụ là tách nhu cầu đó thành repository port.
+Baseline chạy được nhưng Service phụ thuộc concrete MemoryStore và store trả pointer alias. Test khóa lại behavior lỗi để bạn nhìn thấy vấn đề trước khi refactor.
 
-Giữ interface nhỏ. Nếu use case chỉ cần `FindByID` và `Save`, đừng thêm `Delete`, `List`, `Count`.
+~~~bash
+go test ./...
+~~~
+
+Sau khi sửa, test PointerAlias cần được đổi kỳ vọng: state trong store chỉ thay đổi sau Save.

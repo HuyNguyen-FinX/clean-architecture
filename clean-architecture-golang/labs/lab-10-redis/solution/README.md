@@ -1,7 +1,8 @@
 # Solution
 
-Solution tốt nói rõ trade-off:
+CachedReader là decorator; ExpiringCache là adapter dùng Clock được inject. Cache error fail-open sang source vì đây chỉ là performance cache.
 
-- Repository decorator che latency database cho read model.
-- Use case cache phù hợp khi cache là một phần business workflow.
-- Middleware phù hợp rate limit theo request.
+~~~bash
+go test -race ./...
+go vet ./...
+~~~

@@ -1,9 +1,7 @@
 # Starter
 
-Bắt đầu từ một function kiểu God Handler:
+Chạy characterization tests, đọc handler.go rồi ghi findings trước khi mở solution.
 
-```text
-parse HTTP -> query DB -> validate -> update -> publish Kafka -> return JSON
-```
-
-Đầu tiên hãy viết characterization test cho behavior hiện tại.
+~~~bash
+go test -race ./...
+~~~

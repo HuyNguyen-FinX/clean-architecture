@@ -1,13 +1,8 @@
 # Solution
 
-Solution tốt có handler mỏng:
+handler.go chứa protocol policy; Transfer interface đại diện use case consumer. Test xác minh strict parsing, mapping, safe error và context propagation.
 
-```text
-decode JSON
-build command
-call use case
-map error
-encode response
-```
-
-Không có business invariant trong handler.
+~~~bash
+go test -race ./...
+go vet ./...
+~~~

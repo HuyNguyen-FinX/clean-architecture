@@ -553,3 +553,47 @@ Chọn một API backend bạn từng làm và trả lời:
 ## Tổng kết
 
 Software Architecture là cách quản lý thay đổi. Clean Architecture là một tập nguyên tắc giúp business rules đứng độc lập hơn trước framework và infrastructure. Trong Go, áp dụng tốt nghĩa là dùng package, interface nhỏ, constructor injection và composition root một cách tự nhiên. Không cần biến Go thành Java, cũng không cần tạo 20 folder để chứng minh mình đang làm architecture.
+
+## Investigation Walkthrough: Rule Đang Thuộc Về Ai?
+
+Giả sử production báo cùng một transfer được HTTP từ chối nhưng Kafka consumer lại chấp nhận. Đừng bắt đầu bằng cách chuyển file giữa các folder. Điều tra theo evidence:
+
+1. Tìm tất cả write vào balance: `rg 'Balance\s*[-+]?='` và các method `Withdraw|Deposit`.
+2. Dùng `go list -f '{{.ImportPath}} -> {{join .Imports ", "}}' ./...` để xem delivery adapters có cùng gọi application package hay không.
+3. Trace một request HTTP và một Kafka event; so command values trước use case.
+4. Kiểm tra rule nằm trong handler/consumer mapper hay trong Domain behavior.
+5. Viết characterization test tái hiện chênh lệch trước khi refactor.
+
+Nếu HTTP handler kiểm overdraft còn Kafka consumer không kiểm, root cause là duplicated policy ở adapters. Nếu cả hai gọi `Account.Withdraw` nhưng kết quả khác, kiểm tra mapping/rehydration: một adapter có thể làm mất overdraft hoặc currency. Boundary analysis dẫn investigation tới đúng ownership thay vì chỉ thêm `if` ở nơi phát hiện symptom.
+
+### Dependency Check Chạy Được
+
+Project mini-banking có [architecture fitness test](../examples/mini-banking/internal/architecture/dependency_test.go) parse Go imports bằng `go/parser`. Chạy:
+
+~~~bash
+cd ../examples/mini-banking
+go test ./internal/architecture
+~~~
+
+Test này chứng minh domain/application không import outer adapters. Nó không chứng minh business rule đúng, transaction atomic hay service available; mỗi guarantee cần test khác. Architecture test là guardrail có scope, không phải chứng nhận tổng thể.
+
+## Failure Exercise
+
+Với flow `HTTP -> TransferMoney -> PostgreSQL -> Outbox relay -> Kafka`, lập bảng cho sáu điểm crash: trước `BEGIN`, sau debit, trước `COMMIT`, sau commit/trước response, sau publish/trước mark, và sau offset commit. Với mỗi điểm ghi:
+
+- State nào đã durable?
+- Retry có an toàn không và identity nào deduplicate?
+- Component nào sở hữu recovery?
+- Metric/runbook nào cho operator biết hệ thống đang kẹt?
+
+Đối chiếu với [Banking case study](../case-studies/04-banking-account/README.md) và code [mini-banking](../examples/mini-banking/README.md).
+
+## Further Reading Có Chú Giải
+
+- Robert C. Martin, *Clean Architecture*: nguồn đặt tên Dependency Rule và policy/detail; đọc như một trường phái, không như folder prescription cho Go.
+- Alistair Cockburn, *Hexagonal Architecture*: tập trung application bên trong các ports và adapters; hữu ích để hiểu driving/driven symmetry.
+- David Parnas, *On the Criteria To Be Used in Decomposing Systems into Modules*: nền tảng information hiding và thiết kế theo quyết định dễ thay đổi.
+- John Ousterhout, *A Philosophy of Software Design*: góc nhìn module depth và complexity; bổ sung phản biện cho abstraction nông.
+- Go Blog, *Organizing a Go module* và *Context*: quy ước package/module cùng cancellation boundary bằng Go idiomatic.
+
+Các chương [Clean Architecture Foundations](../01-clean-architecture-foundations/README.md) và [Dependency Rule](../02-dependency-rule/README.md) đi sâu từ nền này tới code/import graph cụ thể.

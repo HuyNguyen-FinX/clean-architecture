@@ -114,8 +114,11 @@ Gửi request transfer:
 ```bash
 curl -X POST http://localhost:8080/transfers \
   -H 'Content-Type: application/json' \
+  -H 'Idempotency-Key: demo-transfer-001' \
   -d '{"from_account_id":"A-100","to_account_id":"B-200","amount":500000,"currency":"VND"}'
 ```
+
+Response trả `transfer_id`; gửi lại cùng key/body là replay và không chuyển tiền lần hai. Xem history tại `GET /accounts/A-100/transfers` và metrics tại `GET /metrics`. PostgreSQL/Kafka setup cùng guarantee matrix nằm trong [mini-banking README](./examples/mini-banking/README.md).
 
 ## Cách Học
 

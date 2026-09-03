@@ -1,17 +1,15 @@
 # Solution
 
-Solution mong muốn có `TransferMoneyUseCase` phụ thuộc vào `AccountRepository` interface, không phụ thuộc HTTP hoặc database driver.
+Solution chia thành hai package:
 
-Flow đúng:
+~~~text
+domain/       Account, identity và invariant
+application/  TransferMoney, command, repository/transactor ports
+~~~
 
-```text
-validate command
-load sender
-load receiver
-sender.Withdraw(amount)
-receiver.Deposit(amount)
-save sender
-save receiver
-```
+Test trong application dùng fake/spy và kiểm tra transaction context. Không có infrastructure package vì mục tiêu của lab là consumer boundary; Lab 03 sẽ thêm adapter.
 
-Business invariant vẫn nằm trong domain entity.
+~~~bash
+go test -race ./...
+go vet ./...
+~~~

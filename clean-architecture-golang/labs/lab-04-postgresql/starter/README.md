@@ -1,5 +1,7 @@
 # Starter
 
-Bắt đầu từ lab 03. Giữ nguyên `AccountRepository` interface và tạo package `infrastructure/postgres`.
+AccountRecord cố ý trộn row model và application output, đồng thời không bảo vệ invariant. Chạy test rồi tách domain/application/postgres như yêu cầu lab.
 
-Đừng sửa domain để thêm `db` tag. Nếu cần struct riêng cho row, đặt nó trong PostgreSQL adapter.
+~~~bash
+go test ./...
+~~~

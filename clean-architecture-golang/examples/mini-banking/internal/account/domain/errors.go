@@ -4,6 +4,8 @@ import "errors"
 
 var (
 	ErrInvalidAccountID     = errors.New("invalid account id")
+	ErrInvalidTransferID    = errors.New("invalid transfer id")
+	ErrInvalidTransferTime  = errors.New("invalid transfer time")
 	ErrInvalidCurrency      = errors.New("invalid currency")
 	ErrInvalidAmount        = errors.New("invalid amount")
 	ErrMoneyOverflow        = errors.New("money arithmetic overflow")
